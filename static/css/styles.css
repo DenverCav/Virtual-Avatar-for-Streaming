@@ -1,0 +1,59 @@
+body {
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#avatar {
+    width: 300px;
+
+    /* Smooth transform changes */
+    transition:
+        transform 0.12s ease,
+        filter 0.12s ease;
+
+    /* Idle breathing animation */
+    animation: idleFloat 3s ease-in-out infinite;
+
+    transform-origin: center bottom;
+}
+
+/* Idle breathing */
+@keyframes idleFloat {
+
+    0% {
+        transform: translateY(0px) scale(1);
+    }
+
+    50% {
+        transform: translateY(-4px) scale(1.01);
+    }
+
+    100% {
+        transform: translateY(0px) scale(1);
+    }
+}
+
+/* Talking animation */
+.talking {
+
+    animation:
+        talkBounce 0.18s ease-in-out infinite alternate;
+
+    filter: brightness(1.03);
+}
+
+@keyframes talkBounce {
+
+    from {
+        transform: translateY(0px) scale(1);
+    }
+
+    to {
+        transform: translateY(-6px) scale(1.03);
+    }
+}
