@@ -1,28 +1,104 @@
 body {
     background: transparent;
+
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+
     height: 100vh;
+
     margin: 0;
     overflow: hidden;
 }
 
-#avatar {
-    width: 300px;
+/* =========================
+   START BUTTON
+========================= */
 
-    /* Smooth transform changes */
-    transition:
-        transform 0.12s ease,
-        filter 0.12s ease;
+#startBtn {
 
-    /* Idle breathing animation */
-    animation: idleFloat 3s ease-in-out infinite;
+    margin-bottom: 20px;
 
-    transform-origin: center bottom;
+    padding:
+        10px 20px;
+
+    font-size: 16px;
+
+    cursor: pointer;
 }
 
-/* Idle breathing */
+/* =========================
+   AVATAR FRAME
+========================= */
+
+#avatar-frame {
+
+    background: rgba(20, 20, 20, 0.85);
+
+    border:
+        3px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 24px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 0 30px rgba(0, 0, 0, 0.45);
+
+}
+
+
+/* =========================
+   AVATAR CONTAINER
+========================= */
+
+#avatar-container {
+
+    position: relative;
+
+    width: 300px;
+    height: 300px;
+}
+
+/* =========================
+   AVATAR IMAGES
+========================= */
+.avatar {
+
+    position: absolute;
+
+    width: 100%;
+
+    left: 0;
+    top: 0;
+
+    opacity: 0;
+
+    transition:
+        transform 0.12s ease;
+
+    transform-origin: center bottom;
+
+    animation:
+        idleFloat 3s ease-in-out infinite;
+
+    image-rendering: auto;
+
+    backface-visibility: hidden;
+}
+
+/* Visible avatar */
+
+.avatar.active {
+
+    opacity: 1;
+}
+
+/* =========================
+   IDLE ANIMATION
+========================= */
+
 @keyframes idleFloat {
 
     0% {
@@ -38,14 +114,19 @@ body {
     }
 }
 
-/* Talking animation */
+/* =========================
+   TALKING STATE
+========================= */
+
 .talking {
 
     animation:
         talkBounce 0.18s ease-in-out infinite alternate;
-
-    filter: brightness(1.03);
 }
+
+/* =========================
+   TALK ANIMATION
+========================= */
 
 @keyframes talkBounce {
 
