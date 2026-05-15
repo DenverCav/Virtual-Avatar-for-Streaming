@@ -1,66 +1,155 @@
-const img = document.getElementById("avatar");
+// =========================
+// AVATAR ELEMENTS
+// =========================
+
+const idleImg = document.getElementById("idle");
+const talkImg = document.getElementById("talk");
+
+const startBtn = document.getElementById("startBtn");
+
+// =========================
+// SETTINGS
+// =========================
+
+// Higher = harder to activate talking
+const TALK_THRESHOLD = 7;
+
+// Lower = easier to return to idle
+const IDLE_THRESHOLD = 4;
+
+// Ignore tiny background noise
+const MIN_VOLUME = 2;
+
+// =========================
+// START BUTTON
+// =========================
+
+startBtn.addEventListener("click", setupMic);
+
+// =========================
+// MICROPHONE SETUP
+// =========================
 
 async function setupMic() {
 
-    const stream = await navigator.mediaDevices.getUserMedia({
-        audio: true
-    });
+    try {
 
-    const audioContext = new AudioContext();
+        // Hide button after starting
+        startBtn.style.display = "none";
 
-    await audioContext.resume();
+        // Ask for microphone access
+        const stream =
+            await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
 
-    const source = audioContext.createMediaStreamSource(stream);
-    const analyser = audioContext.createAnalyser();
+        // Create audio context
+        const audioContext = new AudioContext();
 
-    source.connect(analyser);
+        // Some browsers require resume()
+        await audioContext.resume();
 
-    analyser.fftSize = 512;
+        // Convert microphone stream
+        const source =
+            audioContext.createMediaStreamSource(stream);
 
-    analyser.smoothingTimeConstant = 0.85;
+        // Create analyser
+        const analyser =
+            audioContext.createAnalyser();
 
-    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        // Connect source to analyser
+        source.connect(analyser);
 
-    let speaking = false;
+        // Audio quality settings
+        analyser.fftSize = 512;
+        analyser.smoothingTimeConstant = 0.7;
 
-    function checkAudio() {
+        // Store audio data
+        const dataArray =
+            new Uint8Array(analyser.frequencyBinCount);
 
-        analyser.getByteTimeDomainData(dataArray);
+        // Track talking state
+        let speaking = false;
 
-        let sum = 0;
+        // =========================
+        // MAIN AUDIO LOOP
+        // =========================
 
-        for (let i = 0; i < dataArray.length; i++) {
+        function checkAudio() {
 
-            let value = dataArray[i] - 128;
-            sum += value * value;
+            // Read microphone data
+            analyser.getByteTimeDomainData(dataArray);
+
+            let sum = 0;
+
+            const length = dataArray.length;
+
+            // Calculate RMS volume
+            for (let i = 0; i < length; i++) {
+
+                let value = dataArray[i] - 128;
+
+                sum += value * value;
+            }
+
+            // Final volume value
+            let volume =
+                Math.sqrt(sum / length);
+
+            // Remove tiny background noise
+            if (volume < MIN_VOLUME) {
+
+                volume = 0;
+            }
+
+            // =========================
+            // TALKING
+            // =========================
+
+            if (volume > TALK_THRESHOLD && !speaking) {
+
+                speaking = true;
+
+                // Switch visible image
+                idleImg.classList.remove("active");
+                talkImg.classList.add("active");
+
+                // Add animation
+                talkImg.classList.add("talking");
+            }
+
+            // =========================
+            // IDLE
+            // =========================
+
+            else if (volume < IDLE_THRESHOLD && speaking) {
+
+                speaking = false;
+
+                // Switch visible image
+                talkImg.classList.remove("active");
+                idleImg.classList.add("active");
+
+                // Remove animation
+                talkImg.classList.remove("talking");
+            }
+
+            // Run again next frame
+            requestAnimationFrame(checkAudio);
         }
 
-        const volume = Math.sqrt(sum / dataArray.length);
+        // Start loop
+        checkAudio();
 
-        // Talking
-        if (volume > 12 && !speaking) {
+    } catch (error) {
 
-            speaking = true;
+        console.error(
+            "Microphone access failed:",
+            error
+        );
 
-            img.src = "/static/talk.png";
-
-            img.classList.add("talking");
-        }
-
-        // Idle
-        else if (volume < 8 && speaking) {
-
-            speaking = false;
-
-            img.src = "/static/idle.png";
-
-            img.classList.remove("talking");
-        }
-
-        requestAnimationFrame(checkAudio);
+        alert(
+            "Microphone access is required."
+        );
     }
-
-    checkAudio();
 }
-
-setupMic();

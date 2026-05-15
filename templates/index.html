@@ -3,14 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>PNGTuber</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
 
-<img id="avatar" src="{{ url_for('static', filename='idle.png') }}">
+    <button id="startBtn">Start Avatar</button>
 
-<script src="{{ url_for('static', filename='js/main.js') }}"> </script>
+    <div id="avatar-frame">
+    <div id="avatar-container">
+
+        <img
+            id="idle"
+            class="avatar active"
+            src="{{ url_for('static', filename='avatars/idle.png') }}"
+        >
+
+        <img
+            id="talk"
+            class="avatar"
+            src="{{ url_for('static', filename='avatars/talk.png') }}"
+        >
+
+    </div>
+    </div>
+    <script
+            defer
+            src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 </body>
 </html>
