@@ -13,25 +13,46 @@
     <button id="startBtn">Start Avatar</button>
 
     <div id="avatar-frame">
+
     <div id="avatar-container">
 
-        <img
-            id="idle"
-            class="avatar active"
-            src="{{ url_for('static', filename='avatars/idle.png') }}"
-        >
+    <!-- Body -->
+    <img
+        id="body"
+        class="avatar"
+        src="{{ url_for('static', filename='avatars/body.png') }}"
+    >
+
+    <!-- Head Group -->
+    <div id="head-container">
 
         <img
-            id="talk"
+            id="head"
             class="avatar"
-            src="{{ url_for('static', filename='avatars/talk.png') }}"
+            src="{{ url_for('static', filename='avatars/head.png') }}"
         >
 
+        <img
+    id="eyes"
+    class="avatar"
+    src="{{ url_for('static', filename='avatars/eyes.png') }}"
+>
+
+        <img
+            id="beak"
+            class="avatar"
+            src="{{ url_for('static', filename='avatars/mouth-closed.png') }}"
+        >
+
+    </div>
+
+</div>
     </div>
     </div>
     <script
-            defer
-            src="{{ url_for('static', filename='js/main.js') }}"></script>
+    type="module"
+    src="{{ url_for('static', filename='js/main.js') }}">
+</script>
 
 </body>
 </html>
