@@ -6,6 +6,10 @@ import {
     EYE_RANGE_Y
 } from "./config.js";
 
+import {
+    setDebugValue
+} from "./debug.js";
+
 // I store where the mouse WANTS the eyes to move
 
 let eyeTargetX = 0;
@@ -27,6 +31,8 @@ document.addEventListener("mousemove", (e) => {
         (e.clientY / window.innerHeight - 0.5);
 });
 
+
+
 // I continuously animate the eyes using interpolation
 
 export function animateEyes() {
@@ -46,6 +52,16 @@ export function animateEyes() {
             ${eyeCurrentX * EYE_RANGE_X}px,
             ${eyeCurrentY * EYE_RANGE_Y}px
         )`;
+
+    setDebugValue(
+    "eyeX",
+    eyeCurrentX
+);
+
+setDebugValue(
+    "eyeY",
+    eyeCurrentY
+);
 
     requestAnimationFrame(animateEyes);
 }

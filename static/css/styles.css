@@ -196,3 +196,39 @@ body.recording-mode #avatar-frame {
         transform: translateY(-6px) scale(1.03);
     }
 }
+
+/* =========================
+   DEBUG OVERLAY
+========================= */
+
+#debugOverlay {
+
+    position: fixed;
+
+    top: 20px;
+    left: 20px;
+
+    min-width: 220px;
+
+    padding: 16px;
+
+    border-radius: 12px;
+
+    background: rgba(20, 20, 20, 0.9);
+
+    color: white;
+
+    font-family: Consolas, monospace;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    white-space: pre-line;
+
+    z-index: 9999;
+
+    user-select: none;
+
+    pointer-events: none;
+}

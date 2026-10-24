@@ -29,3 +29,11 @@ export const SPEECH_HOLD_TIME = 500;
 // I use this to switch between streaming mode and recording mode.
 
 export const recordingMode = false;
+
+// =========================
+// DEBUG SETTINGS
+// =========================
+
+// I use this to show or hide the debug overlay.
+
+export const debugMode = true;
