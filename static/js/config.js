@@ -11,3 +11,29 @@ export const EYE_SMOOTHING = 0.12;
 export const EYE_RANGE_X = 8;
 
 export const EYE_RANGE_Y = 5;
+
+// =========================
+// AUDIO SETTINGS
+// =========================
+
+// I keep the avatar talking for a short
+// time after speech stops so natural
+// pauses don't immediately close the mouth.
+
+export const SPEECH_HOLD_TIME = 500;
+
+// =========================
+// RECORDING SETTINGS
+// =========================
+
+// I use this to switch between streaming mode and recording mode.
+
+export const recordingMode = false;
+
+// =========================
+// DEBUG SETTINGS
+// =========================
+
+// I use this to show or hide the debug overlay.
+
+export const debugMode = true;

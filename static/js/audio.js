@@ -1,8 +1,13 @@
 import {
     TALK_THRESHOLD,
     IDLE_THRESHOLD,
-    MIN_VOLUME
+    MIN_VOLUME,
+    SPEECH_HOLD_TIME
 } from "./config.js";
+
+import {
+    setDebugValue
+} from "./debug.js";
 
 import { startBtn }
     from "./dom.js";
@@ -54,6 +59,10 @@ export async function setupMic() {
 
         let speaking = false;
 
+        // Used to remember the last time audio was heard
+
+        let lastTimeSpeaking = 0;
+
         function checkAudio() {
 
             analyser
@@ -80,6 +89,7 @@ export async function setupMic() {
                     sum / dataArray.length
                 );
 
+
             // I remove tiny background noise so the avatar does not chatter
 
             if (volume < MIN_VOLUME) {
@@ -89,39 +99,59 @@ export async function setupMic() {
 
             // I switch to talking when volume passes my threshold
 
-            if (
-                volume > TALK_THRESHOLD
-                && !speaking
-            ) {
+            // I update the last speech time whenever
+            // the user is talking.
 
-                speaking = true;
+            if (volume > TALK_THRESHOLD) {
 
-                startTalking();
+                lastTimeSpeaking = Date.now();
+
+                    if (!speaking) {
+
+                        speaking = true;
+
+                        startTalking();
+                    }
             }
 
-            // I return to idle when the user stops speaking
+            // I work out how long it has been
+// since I last detected speech.
 
-            else if (
-                volume < IDLE_THRESHOLD
-                && speaking
-            ) {
+const timeSinceSpeech =
+    Date.now() - lastTimeSpeaking;
 
-                speaking = false;
+// I only return to idle after the
+// user has been quiet long enough.
 
-                stopTalking();
-            }
+if (
+    speaking &&
+    volume < IDLE_THRESHOLD &&
+    timeSinceSpeech > SPEECH_HOLD_TIME
+) {
 
-            requestAnimationFrame(checkAudio);
+    speaking = false;
+
+    stopTalking();
+}
+setDebugValue(
+    "volume",
+    volume
+);
+
+setDebugValue(
+    "speaking",
+    speaking
+);
+
+requestAnimationFrame(checkAudio);
         }
 
         checkAudio();
 
     } catch (error) {
 
-        console.error(error);
+    console.error(error);
 
-        alert(
-            "Microphone access failed."
-        );
-    }
+    alert(error.message);
+}
 }

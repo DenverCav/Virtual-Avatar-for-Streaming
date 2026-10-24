@@ -2,8 +2,17 @@ import { startBtn } from "./dom.js";
 
 import { setupMic } from "./audio.js";
 
-import { animateEyes }
-    from "./eyeTracking.js";
+import { animateEyes } from "./eyeTracking.js";
+
+import { recordingMode } from "./config.js";
+
+import "./debug.js";
+
+// I switch the page into recording mode when I want to record with a green screen.
+
+if (recordingMode) {
+    document.body.classList.add("recording-mode");
+}
 
 // I start eye animation immediately
 

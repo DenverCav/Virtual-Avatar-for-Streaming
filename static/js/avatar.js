@@ -7,20 +7,28 @@ import {
 
 export function startTalking() {
 
+        console.log("Talking");
+
     beak.src =
         "/static/avatars/mouth-open.png";
 
-    avatarContainer
-        .classList.add("talking");
+    avatarContainer.classList.add("talking");
+
+    avatarContainer.classList.add("avatar-active");
+
+    console.log(avatarContainer.className);
 }
 
 // I use this function to return the avatar back to idling
 
 export function stopTalking() {
 
-    beak.src =
-        "/static/avatars/mouth-closed.png";
+        console.log("Idle");
 
-    avatarContainer
-        .classList.remove("talking");
+
+    beak.src = "/static/avatars/mouth-closed.png";
+
+    avatarContainer.classList.remove("talking");
+
+    avatarContainer.classList.remove("avatar-active");
 }
